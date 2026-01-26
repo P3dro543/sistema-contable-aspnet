@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/Database/" />
+  <Project Path="Models/Models.csproj" Id="79bcd082-f24e-4116-9996-e415f3e78ce2" />
+  <Project Path="SistemaContable.Data/SistemaContable.Data.csproj" Id="6e5d1ed3-e099-4de6-b443-6555bfd64aef" />
+  <Project Path="SistemaContable.Web/SistemaContable.Web.csproj" />
+</Solution>
