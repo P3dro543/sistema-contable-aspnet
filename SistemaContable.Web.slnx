@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SistemaContable.Entities/SistemaContable.Entities.csproj" />
+  <Project Path="SistemaContable.Repository/SistemaContable.Repository.csproj" />
+  <Project Path="SistemaContable.Services/SistemaContable.Services.csproj" />
+  <Project Path="SistemaContable.Web/SistemaContable.Web.csproj" />
+</Solution>
