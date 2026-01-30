@@ -1,0 +1,38 @@
+﻿@page
+@model SistemaContable.Web.Pages.Pantalla.IndexModel
+
+<h2>Administración de Pantallas</h2>
+
+<a asp-page="Create" class="btn btn-primary">Nueva Pantalla</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Ruta</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model.Pantallas)
+        {
+            <tr>
+                <td>@p.Nombre</td>
+                <td>@p.Descripcion</td>
+                <td>@p.Ruta</td>
+                <td>@(p.Estado ? "Activa" : "Inactiva")</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@p.IdPantalla">Editar</a> |
+                    <a asp-page="Delete" asp-route-id="@p.IdPantalla">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger">@Model.Mensaje</div>
+}

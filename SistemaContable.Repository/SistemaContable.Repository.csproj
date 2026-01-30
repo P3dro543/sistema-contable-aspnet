@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="MySql.Data" Version="9.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SistemaContable.Entities\SistemaContable.Entities.csproj" />
   </ItemGroup>
 

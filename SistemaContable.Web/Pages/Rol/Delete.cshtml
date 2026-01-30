@@ -1,0 +1,38 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.Rol.DeleteModel
+
+<h2>Eliminar Rol</h2>
+
+<div class="alert alert-warning">
+    ¿Está seguro que desea eliminar este rol?
+</div>
+
+<ul>
+    <li><strong>ID:</strong> @Model.Rol.IdRol</li>
+    <li><strong>Nombre:</strong> @Model.Rol.Nombre</li>
+    <li><strong>Pantallas asignadas:</strong> @Model.Rol.PantallasAsignadas.Count</li>
+</ul>
+
+@if (Model.Rol.PantallasAsignadas.Any())
+{
+    <div class="mb-3">
+        <strong>Pantallas asociadas a este rol:</strong>
+        <ul>
+            @foreach (var pantalla in Model.PantallasDelRol)
+            {
+                <li>@pantalla.Nombre</li>
+            }
+        </ul>
+    </div>
+}
+
+<form method="post">
+    <input type="hidden" asp-for="Rol.IdRol" />
+    <button class="btn btn-danger">Eliminar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-2">@Model.Mensaje</div>
+}
