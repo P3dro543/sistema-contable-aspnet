@@ -1,0 +1,30 @@
+﻿@model SistemaContable.Web.ViewComponents.SidebarMenuViewComponent.SidebarMenuViewModel
+
+<div class="sidebar-container">
+<!-- BARRA SUPERIOR DENTRO DEL MENÚ -->
+<div class="topbar p-3 border-bottom text-end">
+    @Model.NombreUsuario
+    <img src="~/avatares/defecto.jpg" alt="Usuario" width="40" height="40" class="rounded-circle ms-2" />
+</div>
+<nav class="bg-white border-end sidebar">
+    
+    
+    <img src="@Model.RutaLogo" width="150" height="150" />
+
+
+    <a class="navbar-brand mb-4" asp-page="/Index">
+        Sistema Contable
+    </a>
+
+    <ul class="navbar-nav w-100">
+        @foreach (var item in @Model.Pantallas)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-page="@item.Ruta">
+                    @item.Nombre
+                </a>
+            </li>
+        }
+    </ul>
+</nav>
+</div>

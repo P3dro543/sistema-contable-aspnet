@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MySqlX.XDevAPI;
 using SistemaContable.Entities;
 using SistemaContable.Services;
 
@@ -20,7 +21,12 @@ namespace SistemaContable.Web.Pages.Rol
 
         public async Task OnGet()
         {
+            
+
+
+
             Roles = await _service.ObtenerTodos();
+            HttpContext.Session.SetString("idRol", "2");
             await _service.RegistrarConsulta(User.Identity?.Name ?? "admin");
         }
     }

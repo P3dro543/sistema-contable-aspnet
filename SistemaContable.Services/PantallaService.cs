@@ -20,6 +20,11 @@ namespace SistemaContable.Services
         {
             return await _pantallaRepository.ObtenerTodas();
         }
+        //Obtiene todas las pantallas, asignadas a un rol específico
+        public async Task<IEnumerable<Pantalla>> ObtenerPantallaPorRol(int id)
+        {
+            return await _pantallaRepository.ObtenerPantallaPorRol(id);
+        }
 
         public async Task<Pantalla?> ObtenerPorId(int id)
         {
@@ -156,6 +161,8 @@ namespace SistemaContable.Services
             };
             await _bitacoraRepository.Insertar(bitacora);
         }
+
+
 
         public async Task RegistrarConsulta(string usuario)
         {

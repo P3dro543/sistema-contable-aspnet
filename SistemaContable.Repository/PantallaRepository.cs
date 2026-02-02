@@ -25,6 +25,18 @@ namespace SistemaContable.Repository
                          ORDER BY nombre";
             return await connection.QueryAsync<Pantalla>(query);
         }
+        //Obtiene todas las pantallas, asignadas a un rol específico
+        public async Task<IEnumerable<Pantalla>> ObtenerPantallaPorRol(int id)
+        {
+            using var connection = Connection;
+
+            return await connection.QueryAsync<Pantalla>(
+                "sp_obtener_pantallas_por_rol",
+                new { idRol = id },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
 
         public async Task<Pantalla?> ObtenerPorId(int id)
         {

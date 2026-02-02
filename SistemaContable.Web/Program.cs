@@ -3,6 +3,15 @@ using SistemaContable.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(1);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.Name = "SistemaContable.Session";
+});
+
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -16,10 +25,13 @@ builder.Services.AddScoped<RolRepository>(sp =>
 builder.Services.AddScoped<BitacoraRepository>(sp =>
     new BitacoraRepository(connectionString));
 
+builder.Services.AddScoped<SistemaContable.Repository.Auth>(sp =>
+    new SistemaContable.Repository.Auth (connectionString));
 // Servicios
 builder.Services.AddScoped<PantallaService>();
 builder.Services.AddScoped<RolService>();
 
+builder.Services.AddScoped<SistemaContable.Services.Auth>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,9 +39,10 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
+app.UseSession();
 
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
-app.Run();
+app.Run();  

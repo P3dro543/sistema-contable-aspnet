@@ -14,7 +14,7 @@ namespace SistemaContable.Web.Pages
 
         public void OnGet()
         {
-
+            
         }
     }
 }

@@ -1,22 +1,133 @@
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin: 0;
 }
+/* BARRA SUPERIOR */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 220px; /* mismo ancho del sidebar */
+    right: 0;
+    height: 70px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 1rem;
+    z-index: 900;
+}
+
+/* IMAGEN DERECHA */
+.topbar-right img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%; /* opcional */
+}
+
+/* MENU LATERAL */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    padding: 1rem;
+    background-color: #ffffff;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+/* CONTENIDO */
+.content {
+    margin-left: 220px;
+    padding-top: 70px; /* altura de la topbar */
+    min-height: 100vh;
+}
+
+
+/* CONTENIDO INTERNO DEL MENU */
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* LINKS */
+.sidebar .nav-link {
+    padding: 0.5rem 0;
+}
+
+/* OCULTO */
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.content.expanded {
+    margin-left: 0;
+}
+/*Login*/
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+/* Contenedor del login */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    background-color: #fff;
+}
+
+    /* Títulos centrados */
+    .login-container h1,
+    .login-container h3 {
+        text-align: center;
+    }
+
+    /* Inputs */
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* Botón */
+    .login-container button {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+/* Mensaje de error */
+.alert-danger {
+    display: none;
+    margin-bottom: 15px;
+}
+
+/* Validación Razor */
+.text-danger {
+    font-size: 0.9em;
+    margin-top: 5px;
