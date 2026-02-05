@@ -9,7 +9,7 @@ namespace SistemaContable.Data
     public static class Conexion
     {
         public static string Cadena =
-            "server=localhost;port=3306;database=SistemaContable;user=root;password=1234;";
+            "server=localhost;port=3306;database=sistema_contable;uid=root;pwd=root;";
     }
 }
 
