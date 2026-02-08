@@ -12,6 +12,7 @@ namespace SistemaContable.Web.ViewComponents
         {
             _servicePantalla = service;
         }
+
         public class SidebarMenuViewModel
         {
             public IEnumerable<Pantalla> Pantallas { get; set; }
@@ -33,8 +34,7 @@ namespace SistemaContable.Web.ViewComponents
                 NombreUsuario = HttpContext.Session.GetString("Nombre"),
                 Pantallas = await ObtenerPantallasAsync(),
                 RutaLogo = "/images/logo-contador.png"
-                //RutaLogo= "/avatares/defecto.jpg"
-                //"D:\A_CUC\IC-2026\Adm Sitios Web\Proyecto\SistemaContable.Web\wwwroot\images\logo-contador.png"
+             
             };
 
             return View(vm);
@@ -47,6 +47,7 @@ namespace SistemaContable.Web.ViewComponents
             
             return await _servicePantalla.ObtenerPantallaPorRol(idRol);
         }
+
 
     }
 }

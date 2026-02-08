@@ -20,7 +20,7 @@ namespace SistemaContable.Repository
         private IDbConnection Connection => new MySqlConnection(_connectionString);
 
 
-        public async Task<Usuario?> ObtenerUsuarioPorUsername(String userName)
+        public async Task<UsuarioP?> ObtenerUsuarioPorUsername(String userName)
         {
             // consulta temporal para obtener usuario por username
             using var connection = Connection;
@@ -41,7 +41,7 @@ namespace SistemaContable.Repository
                 ON ur.id_rol = r.id_rol
             WHERE u.username = @username;
             ";
-            return await connection.QueryFirstOrDefaultAsync<Usuario>(query, new { username = userName });
+            return await connection.QueryFirstOrDefaultAsync<UsuarioP>(query, new { username = userName });
         }
     }
 }

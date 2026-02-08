@@ -1,11 +1,13 @@
+using SistemaContable.Middleware;
 using SistemaContable.Repository;
 using SistemaContable.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(1);
+    options.IdleTimeout = TimeSpan.FromMinutes(5);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.Name = "SistemaContable.Session";
@@ -27,11 +29,14 @@ builder.Services.AddScoped<BitacoraRepository>(sp =>
 
 builder.Services.AddScoped<SistemaContable.Repository.Auth>(sp =>
     new SistemaContable.Repository.Auth (connectionString));
+builder.Services.AddScoped<UsuarioRepository>(sp =>
+    new UsuarioRepository(connectionString));
 // Servicios
 builder.Services.AddScoped<PantallaService>();
 builder.Services.AddScoped<RolService>();
 
 builder.Services.AddScoped<SistemaContable.Services.Auth>();
+builder.Services.AddScoped<UsuarioService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +45,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 app.UseSession();
+app.UseMiddleware<ValidarSesionMiddleware>();
 
 app.UseStaticFiles();
 app.UseRouting();

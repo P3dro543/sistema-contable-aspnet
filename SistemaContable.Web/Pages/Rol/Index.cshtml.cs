@@ -26,7 +26,7 @@ namespace SistemaContable.Web.Pages.Rol
 
 
             Roles = await _service.ObtenerTodos();
-            HttpContext.Session.SetString("idRol", "2");
+            //HttpContext.Session.SetString("idRol", "2");
             await _service.RegistrarConsulta(User.Identity?.Name ?? "admin");
         }
     }

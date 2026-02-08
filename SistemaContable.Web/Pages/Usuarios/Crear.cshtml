@@ -1,0 +1,128 @@
+﻿@page
+@model SistemaContable.Web.Pages.Usuarios.CrearModel
+
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post">
+    <!-- Nombre de Usuario -->
+    <div class="mb-2">
+        <label>Nombre de Usuario *</label>
+        <input asp-for="Usuario.username" class="form-control" maxlength="50" />
+        <small class="form-text text-muted">Identificación única del usuario.</small>
+    </div>
+
+    <!-- Nombre -->
+    <div class="mb-2">
+        <label>Nombre *</label>
+        <input asp-for="Usuario.nombre" class="form-control" maxlength="50" />
+        <small class="form-text text-muted">Máximo 50 caracteres. Solo letras y espacios.</small>
+    </div>
+
+    <!-- Apellido -->
+    <div class="mb-2">
+        <label>Apellido *</label>
+        <input asp-for="Usuario.apellido" class="form-control" maxlength="50" />
+        <small class="form-text text-muted">Máximo 50 caracteres. Solo letras y espacios.</small>
+    </div>
+
+    <!-- Correo -->
+    <div class="mb-2">
+        <label>Correo Electrónico *</label>
+        <input asp-for="Usuario.correo" type="email" class="form-control" maxlength="100" />
+    </div>
+
+    <!-- Contraseña -->
+    <div class="mb-2">
+        <label>Contraseña *</label>
+        <div class="input-group">
+            <input asp-for="Usuario.password" type="text" class="form-control"
+                   readonly style="background-color: #f8f9fa;" />
+            <button type="submit" asp-page-handler="GenerarClave"
+                    class="btn btn-outline-secondary">
+                Autogenerar
+            </button>
+        </div>
+        <small class="form-text text-muted">
+            Debe iniciar con letra y contener letras, números y símbolos (+-*$.)
+        </small>
+    </div>
+
+    <!-- Estado -->
+    <div class="mb-2">
+        <label>Estado *</label>
+        <div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                       asp-for="Usuario.estado" value="1" checked>
+                <label class="form-check-label">Activo</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                       asp-for="Usuario.estado" value="0">
+                <label class="form-check-label">Inactivo</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roles Asociados -->
+    <div class="mb-3">
+        <label>Roles Asociados</label>
+        <div class="border p-3" style="max-height: 300px; overflow-y: auto;">
+            @if (Model.RolesDisponibles.Any())
+            {
+                @foreach (var rol in Model.RolesDisponibles)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="RolesSeleccionados"
+                               value="@rol.IdRol"
+                               id="rol_@rol.IdRol" />
+                        <label class="form-check-label" for="rol_@rol.IdRol">
+                            @rol.Nombre
+                        </label>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">No hay roles disponibles.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Botones -->
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+<!-- Mensaje de error -->
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-2">@Model.Mensaje</div>
+}
+
+<script>
+    // Hacer que el campo de contraseña sea editable al hacer doble clic
+    document.addEventListener('DOMContentLoaded', function() {
+        var passwordField = document.querySelector('input[name="Usuario.password"]');
+        if (passwordField) {
+            passwordField.addEventListener('dblclick', function() {
+                this.readOnly = false;
+                this.style.backgroundColor = 'white';
+            });
+
+            // Volver a readonly al perder el foco
+            passwordField.addEventListener('blur', function() {
+                if (this.value.trim() === '') {
+                    this.readOnly = true;
+                    this.style.backgroundColor = '#f8f9fa';
+                }
+            });
+        }
+    });
+</script>

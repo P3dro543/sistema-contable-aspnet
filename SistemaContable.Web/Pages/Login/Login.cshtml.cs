@@ -15,7 +15,7 @@ namespace SistemaContable.Web.Pages.Login
         }
 
         [BindProperty]
-        public Usuario NuevoUsuario { get; set; } = new Usuario();
+        public UsuarioP NuevoUsuario { get; set; } = new UsuarioP();
 
 
         // Se ejecuta al cargar la página (GET)
@@ -26,7 +26,7 @@ namespace SistemaContable.Web.Pages.Login
         // Se ejecuta al enviar el formulario (POST)
         public IActionResult OnPost()
         {
-            Usuario usuarioxConsultar;
+            UsuarioP usuarioxConsultar;
             try
             {
                 //login correcto
