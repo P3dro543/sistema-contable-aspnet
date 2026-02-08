@@ -1,0 +1,242 @@
+﻿@model CuentaContable
+
+@{
+    ViewData["Title"] = "Editar Cuenta Contable";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4>Editar Cuenta Contable</h4>
+                    <h6 class="mb-0">@Model.Codigo - @Model.Nombre</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Editar" id="cuentaForm">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="IdCuenta" />
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Codigo" class="form-label">Código *</label>
+                                <input asp-for="Codigo" class="form-control" maxlength="20" />
+                                <span asp-validation-for="Codigo" class="text-danger"></span>
+                                <small class="form-text text-muted">El código debe ser único en el sistema.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Nombre" class="form-label">Nombre *</label>
+                                <input asp-for="Nombre" class="form-control" maxlength="100" />
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                                <small class="form-text text-muted">Máximo 100 caracteres, solo letras, números y espacios</small>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Tipo" class="form-label">Tipo *</label>
+                                <select asp-for="Tipo" class="form-select">
+                                    <option value="">Seleccione un tipo</option>
+                                    @foreach (var tipo in ViewBag.Tipos)
+                                    {
+                                        <option value="@tipo">@tipo</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Tipo" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="TipoSaldo" class="form-label">Tipo de Saldo *</label>
+                                <select asp-for="TipoSaldo" class="form-select">
+                                    <option value="">Seleccione tipo de saldo</option>
+                                    @foreach (var tipoSaldo in ViewBag.TiposSaldo)
+                                    {
+                                        <option value="@tipoSaldo">@tipoSaldo</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="TipoSaldo" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="IdCuentaPadre" class="form-label">Cuenta Padre</label>
+                                <select asp-for="IdCuentaPadre" class="form-select">
+                                    <option value="">Sin cuenta padre (cuenta de nivel superior)</option>
+                                    @foreach (var cuentaPadre in ViewBag.CuentasPadre)
+                                    {
+                                        <option value="@cuentaPadre.IdCuenta">@cuentaPadre.Codigo - @cuentaPadre.Nombre</option>
+                                    }
+                                </select>
+                                <small class="form-text text-muted">Opcional. Si selecciona una cuenta padre, esta será una subcuenta.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mt-4">
+                                    @if (Model.PuedeAceptarMovimiento && !Model.IdCuentaPadre.HasValue)
+                                    {
+                                        <input asp-for="AceptaMovimiento" class="form-check-input" id="aceptaMovimiento" />
+                                        <label class="form-check-label" for="aceptaMovimiento">
+                                            Acepta Movimiento
+                                        </label>
+                                        <small class="form-text text-muted d-block">
+                                            Solo disponible para cuentas sin subcuentas.
+                                        </small>
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="AceptaMovimiento" class="form-check-input" id="aceptaMovimiento" disabled />
+                                        <label class="form-check-label text-muted" for="aceptaMovimiento">
+                                            Acepta Movimiento
+                                        </label>
+                                        @if (Model.IdCuentaPadre.HasValue)
+                                        {
+                                            <small class="form-text text-danger d-block">
+                                                Esta cuenta tiene una cuenta padre, no puede aceptar movimientos.
+                                            </small>
+                                        }
+                                        else if (Model.NumeroHijas > 0)
+                                        {
+                                            <small class="form-text text-danger d-block">
+                                                Esta cuenta tiene @Model.NumeroHijas subcuenta(s), no puede aceptar movimientos.
+                                            </small>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-check mt-4">
+                                    <input asp-for="Estado" class="form-check-input" id="estado" />
+                                    <label class="form-check-label" for="estado">
+                                        Cuenta Activa
+                                    </label>
+                                    <small class="form-text text-muted d-block">
+                                        Las cuentas inactivas no aparecerán en los listados para crear asientos.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.NumeroHijas > 0)
+                        {
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <strong>Advertencia:</strong> Esta cuenta tiene @Model.NumeroHijas subcuenta(s) asociadas.
+                                <ul class="mb-0 mt-2">
+                                    <li>No puede aceptar movimientos directos.</li>
+                                    <li>No puede ser eliminada mientras tenga subcuentas.</li>
+                                    <li>Los cambios afectarán a todas sus subcuentas.</li>
+                                </ul>
+                            </div>
+                        }
+
+                        @if (Model.IdCuentaPadre.HasValue)
+                        {
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i>
+                                <strong>Información:</strong> Esta cuenta es una subcuenta de
+                                <strong>@(Model.NombreCuentaPadre ?? "cuenta padre")</strong>.
+                                <ul class="mb-0 mt-2">
+                                    <li>No puede aceptar movimientos directos.</li>
+                                    <li>Hereda algunas propiedades de su cuenta padre.</li>
+                                </ul>
+                            </div>
+                        }
+
+                        <div class="row mt-4">
+                            <div class="col">
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="bi bi-save"></i> Actualizar Cuenta
+                                </button>
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="bi bi-x-circle"></i> Cancelar
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            // Deshabilitar "Acepta Movimiento" si se selecciona cuenta padre
+            $('#IdCuentaPadre').change(function () {
+                if ($(this).val()) {
+                    $('#aceptaMovimiento').prop('checked', false).prop('disabled', true);
+                    $('#aceptaMovimiento').next('.form-check-label').addClass('text-muted');
+                } else if (@((Model.NumeroHijas ?? 0) == 0).ToString().ToLower()) {
+                    $('#aceptaMovimiento').prop('disabled', false);
+                    $('#aceptaMovimiento').next('.form-check-label').removeClass('text-muted');
+                }
+            });
+
+            // Validación del código (solo letras, números y espacios)
+            $('#Codigo').on('input', function () {
+                var regex = /^[A-Za-z0-9\s]*$/;
+                if (!regex.test($(this).val())) {
+                    $(this).val($(this).val().replace(/[^A-Za-z0-9\s]/g, ''));
+                }
+            });
+
+            // Validación del nombre (solo letras, números y espacios)
+            $('#Nombre').on('input', function () {
+                var regex = /^[A-Za-z0-9\s]*$/;
+                if (!regex.test($(this).val())) {
+                    $(this).val($(this).val().replace(/[^A-Za-z0-9\s]/g, ''));
+                }
+            });
+
+            // Validar combinación Tipo - TipoSaldo
+            function validarCombinacion() {
+                var tipo = $('#Tipo').val();
+                var tipoSaldo = $('#TipoSaldo').val();
+
+                var combinacionesValidas = {
+                    'Activo': ['Deudor'],
+                    'Pasivo': ['Acreedor'],
+                    'Capital': ['Acreedor'],
+                    'Gasto': ['Deudor'],
+                    'Ingreso': ['Acreedor']
+                };
+
+                if (tipo && tipoSaldo) {
+                    if (!combinacionesValidas[tipo]?.includes(tipoSaldo)) {
+                        $('#TipoSaldo').addClass('is-invalid');
+                        $('#TipoSaldo').next('.text-danger').text(`El tipo "${tipo}" normalmente tiene saldo "${combinacionesValidas[tipo]?.[0] || 'Deudor'}"`);
+                    } else {
+                        $('#TipoSaldo').removeClass('is-invalid');
+                        $('#TipoSaldo').next('.text-danger').text('');
+                    }
+                }
+            }
+
+            $('#Tipo, #TipoSaldo').change(validarCombinacion);
+
+            // Ejecutar validación al cargar
+            validarCombinacion();
+
+            // Mensaje de confirmación antes de enviar
+            $('#cuentaForm').submit(function (e) {
+                if (!$(this).valid()) {
+                    return;
+                }
+
+                var codigo = $('#Codigo').val();
+                var nombre = $('#Nombre').val();
+
+                if (!confirm(`¿Actualizar la cuenta "${codigo} - ${nombre}"?`)) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}
