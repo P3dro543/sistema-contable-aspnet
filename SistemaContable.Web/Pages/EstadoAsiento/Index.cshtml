@@ -1,0 +1,59 @@
+﻿@page
+@model SistemaContable.Web.Pages.EstadoAsiento.IndexModel
+@{
+    ViewData["Title"] = "Estados de Asientos";
+}
+
+<h2>Administración de Estados de Asientos</h2>
+
+<a asp-page="Create" class="btn btn-primary mb-3">Nuevo Estado</a>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Estados)
+        {
+            <tr>
+                <td>@item.IdEstado</td>
+                <td>@item.Nombre</td>
+                <td>@item.Descripcion</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@item.IdEstado" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-page="Delete" asp-route-id="@item.IdEstado" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.TotalPaginas > 1)
+{
+    <nav aria-label="Navegación de páginas" class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            <li class="page-item @(Model.PaginaActual == 1 ? "disabled" : "")">
+                <a class="page-link" asp-route-p="@(Model.PaginaActual - 1)">Anterior</a>
+            </li>
+
+            @for (int i = 1; i <= Model.TotalPaginas; i++)
+            {
+                <li class="page-item @(Model.PaginaActual == i ? "active" : "")">
+                    <a class="page-link" asp-route-p="@i">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.PaginaActual == Model.TotalPaginas ? "disabled" : "")">
+                <a class="page-link" asp-route-p="@(Model.PaginaActual + 1)">Siguiente</a>
+            </li>
+
+        </ul>
+    </nav>
+}
+

@@ -1,0 +1,29 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.EstadoAsiento.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Estado";
+}
+
+<h2>Eliminar Estado de Asiento</h2>
+
+<div class="alert alert-warning">
+    ¿Está seguro que desea eliminar este estado?
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <p><strong>Nombre:</strong> @Model.Estado.Nombre</p>
+        <p><strong>Descripción:</strong> @Model.Estado.Descripcion</p>
+    </div>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Estado.IdEstado" />
+    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-3">@Model.Mensaje</div>
+}

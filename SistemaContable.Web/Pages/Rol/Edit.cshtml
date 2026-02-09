@@ -22,7 +22,7 @@
         <div class="border p-3" style="max-height: 300px; overflow-y: auto;">
             @if (Model.PantallasDisponibles.Any())
             {
-                @foreach (var pantalla in Model.PantallasDisponibles)
+                foreach (var pantalla in Model.PantallasDisponibles)
                 {
                     <div class="form-check">
                         <input class="form-check-input"

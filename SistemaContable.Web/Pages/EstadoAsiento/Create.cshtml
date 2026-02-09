@@ -1,0 +1,27 @@
+﻿@page
+@model SistemaContable.Web.Pages.EstadoAsiento.CreateModel
+@{
+    ViewData["Title"] = "Nuevo Estado";
+}
+
+<h2>Nuevo Estado de Asiento</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input asp-for="Estado.Nombre" class="form-control" maxlength="50" />
+        <small class="text-muted">Solo letras.</small>
+    </div>
+    <div class="mb-3">
+        <label>Descripción</label>
+        <textarea asp-for="Estado.Descripcion" class="form-control" rows="3" maxlength="200"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-3">@Model.Mensaje</div>
+}

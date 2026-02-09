@@ -1,0 +1,27 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.PeriodoContable.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Periodo";
+}
+
+<h2>Eliminar Periodo</h2>
+
+<div class="alert alert-warning">¿Está seguro que desea eliminar este periodo?</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <p><strong>Periodo:</strong> @Model.Periodo.Mes / @Model.Periodo.Anio</p>
+        <p><strong>Estado:</strong> @Model.Periodo.Estado</p>
+    </div>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="Periodo.IdPeriodo" />
+    <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-3">@Model.Mensaje</div>
+}
