@@ -20,6 +20,11 @@ builder.Services.AddRazorPages();
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 
 // Repositorios
+builder.Services.AddScoped<AsientoRepository>(_ =>
+    new AsientoRepository(connectionString));
+
+
+
 builder.Services.AddScoped<PantallaRepository>(sp =>
     new PantallaRepository(connectionString));
 builder.Services.AddScoped<RolRepository>(sp =>
@@ -45,7 +50,7 @@ builder.Services.AddScoped<RolService>();
 builder.Services.AddScoped<EstadoAsientoService>();
 builder.Services.AddScoped<PeriodoContableService>();
 builder.Services.AddScoped<CierreContableService>();
-
+builder.Services.AddScoped<AsientoService>();
 
 builder.Services.AddScoped<SistemaContable.Services.Auth>();
 builder.Services.AddScoped<UsuarioService>();
@@ -57,10 +62,17 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 app.UseSession();
-app.UseMiddleware<ValidarSesionMiddleware>();
+app.UseMiddleware<ValidarSesionMiddleware>();// Agrega el middleware de validación de sesión 80
 
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+app.MapGet("/", (HttpContext context) =>
+{
+  
+    context.Response.Redirect(context.Request.PathBase + "/Login/Login");
+
+    return Task.CompletedTask;
+});
 app.MapRazorPages();
 app.Run();  

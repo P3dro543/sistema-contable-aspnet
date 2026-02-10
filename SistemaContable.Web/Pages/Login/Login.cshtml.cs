@@ -35,19 +35,18 @@ namespace SistemaContable.Web.Pages.Login
                     NuevoUsuario.password
                 ).GetAwaiter().GetResult();
 
-                TempData["MensajeUsuario"] = "Bienvenido: " + usuarioxConsultar.nombre;
-
-                TempData["Estado"] = "success";
                 // guardar datos en session 
+                
                 
                 HttpContext.Session.SetString("idRol",  (usuarioxConsultar.idRol).ToString());
                 HttpContext.Session.SetString("Nombre", usuarioxConsultar.nombre + " " + usuarioxConsultar.apellido);
+                HttpContext.Session.SetString("Rol", (usuarioxConsultar.rol).ToString());
                 if (usuarioxConsultar.rol == "Administrador")
                 {
                     return RedirectToPage("/IndexAdmin");
                 }
                 else {
-                    return RedirectToPage("/Index");
+                    return RedirectToPage("/IndexAdmin");
                 }
                     //HttpContext.Session.SetString("", '');
 

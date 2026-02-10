@@ -6,7 +6,7 @@ namespace SistemaContable.Web.ViewComponents
 {
     public class SidebarMenuViewComponent : ViewComponent
     {
-        public string rutaAvatar = "/images/avatar.png";
+       
         private readonly PantallaService _servicePantalla;
         public SidebarMenuViewComponent(PantallaService service)
         {
@@ -33,9 +33,10 @@ namespace SistemaContable.Web.ViewComponents
             {
                 NombreUsuario = HttpContext.Session.GetString("Nombre"),
                 Pantallas = await ObtenerPantallasAsync(),
-                RutaLogo = "/images/logo-contador.png"
-             
-            };
+                
+                RutaLogo = "~/images/logo-contador.png"
+
+    };
 
             return View(vm);
         }

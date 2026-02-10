@@ -8,11 +8,10 @@
 </div>
 <nav class="bg-white border-end sidebar">
     
-    
-    <img src="@Model.RutaLogo" width="150" height="150" />
+        <img src="@Url.Content(Model.RutaLogo)" width="150" height="150" />
 
 
-    <a class="navbar-brand mb-4" asp-page="/Index">
+    <a class="navbar-brand mb-4" href="/Index">
         Sistema Contable
     </a>
 
@@ -20,7 +19,8 @@
         @foreach (var item in @Model.Pantallas)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-page="@item.Ruta">
+                    <a class="nav-link text-dark" href="@item.Ruta">
+
                     @item.Nombre
                 </a>
             </li>
