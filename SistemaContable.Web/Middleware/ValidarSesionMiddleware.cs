@@ -32,8 +32,9 @@ namespace SistemaContable.Middleware
             }
 
             // 2️⃣ Permitir páginas públicas
-            if (path.Contains("login") || path.Contains("accesodenegado"))
+            if (path.Contains("login") || path.Contains("accesodenegado")|| path.Contains("expirada"))
             {
+               
                 await _next(context);
                 return;
             }
@@ -51,7 +52,7 @@ namespace SistemaContable.Middleware
             // 4️⃣ Validar sesión
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(idRolString))
             {
-                context.Response.Redirect("/AccesoDenegado");
+                context.Response.Redirect("Expirada");
                 return;
             }
 

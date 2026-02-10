@@ -57,7 +57,7 @@ builder.Services.AddScoped<UsuarioService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment()) 
 {
     app.UseExceptionHandler("/Error");
 }
@@ -67,12 +67,6 @@ app.UseMiddleware<ValidarSesionMiddleware>();// Agrega el middleware de validaci
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
-app.MapGet("/", (HttpContext context) =>
-{
-  
-    context.Response.Redirect(context.Request.PathBase + "/Login/Login");
 
-    return Task.CompletedTask;
-});
 app.MapRazorPages();
 app.Run();  

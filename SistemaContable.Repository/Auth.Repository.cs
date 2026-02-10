@@ -22,6 +22,10 @@ namespace SistemaContable.Repository
 
         public async Task<UsuarioP?> ObtenerUsuarioPorUsername(String userName)
         {
+           
+
+
+
             // consulta temporal para obtener usuario por username
             using var connection = Connection;
             var query = @"SELECT 
