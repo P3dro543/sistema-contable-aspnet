@@ -83,12 +83,21 @@ namespace SistemaContable.Services
             {
                 lista.Add(new Asiento
                 {
-                    Id = dr.GetInt32("id"),
-                    Consecutivo = dr.GetString("consecutivo"),
+                    Id = dr.GetInt32("id_asiento"),
+
+                    // Consecutivo: Es int en DB. Usamos Convert para manejar nulos y convertir a string
+                    Consecutivo = dr["consecutivo"] != DBNull.Value ? dr["consecutivo"].ToString() : "0",
+
                     Fecha = dr.GetDateTime("fecha"),
-                    Codigo = dr.GetString("codigo"),
-                    Referencia = dr.GetString("referencia"),
-                    Estado = dr.GetString("estado")
+
+                    // Codigo: Si es nulo, le ponemos un texto vacío ""
+                    Codigo = dr["codigo"] != DBNull.Value ? dr["codigo"].ToString() : "",
+
+                    // Referencia: Si es nulo, le ponemos un texto vacío ""
+                    Referencia = dr["referencia"] != DBNull.Value ? dr["referencia"].ToString() : "",
+
+                    // Estado: Usamos el nombre real de la columna 'id_estado'
+                    Estado = dr["id_estado"] != DBNull.Value ? dr["id_estado"].ToString() : "0"
                 });
             }
 

@@ -17,6 +17,8 @@ namespace SistemaContable.Middleware
 
         public async Task InvokeAsync(HttpContext context)
         {
+            var nombre = context.Session.GetString("Nombre");
+            var idRolString = context.Session.GetString("idRol");
             var path = context.Request.Path.Value?.ToLower() ?? "";
 
             // 1️⃣ Ignorar archivos estáticos
@@ -42,12 +44,16 @@ namespace SistemaContable.Middleware
             // 3️⃣ Permitir home
             if (path == "/index" || path == "/indexadmin"|| path=="/")
             {
+                if(path == "/indexadmin" && string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(idRolString))
+                {
+                    context.Response.Redirect("Expirada");
+                    return;
+                }
                 await _next(context);
                 return;
             }
 
-            var nombre = context.Session.GetString("Nombre");
-            var idRolString = context.Session.GetString("idRol");
+            
 
             // 4️⃣ Validar sesión
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(idRolString))
