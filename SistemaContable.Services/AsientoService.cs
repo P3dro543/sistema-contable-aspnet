@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 using SistemaContable.Entities;
+using System.Reflection.PortableExecutable;
 
 namespace SistemaContable.Services
 {
@@ -28,7 +29,7 @@ namespace SistemaContable.Services
             {
                 var cmd = new MySqlCommand(@"
                     INSERT INTO asientos
-                    (consecutivo, fecha, codigo, referencia, estado)
+                    (consecutivo, fecha, codigo, referencia, id_estado)
                     VALUES (@c,@f,@co,@r,@e)", con, tx);
 
                 cmd.Parameters.AddWithValue("@c", asiento.Consecutivo);
@@ -44,8 +45,8 @@ namespace SistemaContable.Services
                 foreach (var d in asiento.Detalles)
                 {
                     var det = new MySqlCommand(@"
-                        INSERT INTO detalle_asiento
-                        (asiento_id, cuenta, tipo, monto, descripcion)
+                        INSERT INTO asiento_detalle
+                        (id_asiento, id_cuenta, tipo_movimiento, monto, descripcion)
                         VALUES (@a,@cu,@t,@m,@d)", con, tx);
 
                     det.Parameters.AddWithValue("@a", id);
@@ -97,11 +98,59 @@ namespace SistemaContable.Services
                     Referencia = dr["referencia"] != DBNull.Value ? dr["referencia"].ToString() : "",
 
                     // Estado: Usamos el nombre real de la columna 'id_estado'
-                    Estado = dr["id_estado"] != DBNull.Value ? dr["id_estado"].ToString() : "0"
+                    Estado = dr["id_estado"] != DBNull.Value ? dr["id_estado"].ToString() : "0",
+
+
                 });
+            }
+            dr.Close();
+
+            // Cargar detalles
+            foreach (var a in lista)
+            {
+                a.Detalles = ObtenerDetalles(a.Id, con);
             }
 
             return lista;
+
+        }
+        private List<DetalleAsiento> ObtenerDetalles(int asientoId, MySqlConnection conn)
+        {
+
+            var lista = new List<Asiento>();
+
+            using var con = new MySqlConnection(_cadena);
+            con.Open();
+
+            List<DetalleAsiento> detalles = new();
+
+            string sql = "SELECT * FROM asiento_detalle WHERE id_asiento=@id";
+
+            using var cmd = new MySqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@id", asientoId);
+
+            using var reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                DetalleAsiento d = new DetalleAsiento
+                {
+                    Id = reader.GetInt32("id_detalle"),
+                    AsientoId = asientoId,
+                    Cuenta = (reader.GetInt32("id_cuenta")).ToString(),
+                    TipoMovimiento = reader.GetString("Tipo_Movimiento"),
+                    Monto = reader.GetDecimal("Monto"),
+                    Descripcion = reader.IsDBNull(reader.GetOrdinal("Descripcion"))
+                ? "NA"
+                : reader.GetString("Descripcion")
+                };
+
+                detalles.Add(d);
+            }
+
+            reader.Close();
+
+            return detalles;
         }
 
         // ============================
