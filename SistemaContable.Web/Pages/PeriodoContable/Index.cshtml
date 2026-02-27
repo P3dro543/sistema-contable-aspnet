@@ -57,12 +57,48 @@
                        asp-route-p="@Model.PaginaActual"
                        asp-route-filtro="@Model.Filtro"
                        class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-page="Delete" asp-route-id="@item.IdPeriodo" class="btn btn-danger btn-sm">Eliminar</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.IdPeriodo">Eliminar</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<!-- Modal de Eliminación -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Realmente desea eliminar el elemento seleccionado?
+            </div>
+            <div class="modal-footer">
+                <form method="post" asp-page-handler="Eliminar">
+                    <input type="hidden" name="id" id="deleteId" value="" />
+                    <button type="submit" class="btn btn-danger">Sí</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                var button = event.relatedTarget;
+                var id = button.getAttribute('data-id');
+                var modalInput = deleteModal.querySelector('#deleteId');
+                modalInput.value = id;
+            });
+        });
+    </script>
+}
 
 @if (Model.TotalPaginas > 1)
 {

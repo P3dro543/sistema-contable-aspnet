@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SistemaContable.Services;
 
@@ -15,11 +15,11 @@ namespace SistemaContable.Web.Pages.PeriodoContable
 
         
         [BindProperty(SupportsGet = true)]
-        public int p { get; set; } // P�gina de origen
+        public int p { get; set; } // Página de origen
 
         [BindProperty(SupportsGet = true)]
         public string filtro { get; set; } // Filtro de origen
-        public SistemaContable.Entities.PeriodoContable Periodo { get; set; } = new();
+        [BindProperty] public SistemaContable.Entities.PeriodoContable Periodo { get; set; } = new();
         public string Mensaje { get; set; } = "";
 
         public async Task<IActionResult> OnGet(int id)

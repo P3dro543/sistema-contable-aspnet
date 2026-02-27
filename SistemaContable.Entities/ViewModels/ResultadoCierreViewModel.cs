@@ -13,9 +13,17 @@
 
     public class DetalleCierreCuenta
     {
+        public int IdCuenta { get; set; }
         public string Codigo { get; set; }
         public string Cuenta { get; set; }
+        public string Naturaleza { get; set; } // Deudor o Acreedor
+        public decimal SaldoInicial { get; set; }
         public decimal MovimientoDebe { get; set; }
         public decimal MovimientoHaber { get; set; }
+        
+        // Calculado en vuelo o traido de BD
+        public decimal SaldoFinal => Naturaleza == "Deudor" 
+            ? SaldoInicial + MovimientoDebe - MovimientoHaber 
+            : SaldoInicial + MovimientoHaber - MovimientoDebe;
     }
 }

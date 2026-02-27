@@ -30,16 +30,24 @@ namespace SistemaContable.Services
                 return resultado;
             }
 
-            // Paginación de los movimientos
-            var (items, totalRegistros) = await _repo.ObtenerMovimientosPaginados(idPeriodo, pagina, TAMANO_PAGINA);
-            resultado.Cuentas = items;
-            resultado.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / TAMANO_PAGINA);
+            // Validar restricción ADM14
+            if (await _repo.ExistenPeriodosAnterioresAbiertos(periodo.Anio, periodo.Mes))
+            {
+                resultado.MensajeError = $"No se puede cerrar {periodo.Mes}/{periodo.Anio} porque existen periodos anteriores que aún están abiertos.";
+                return resultado;
+            }
 
+
+
+            var todosLosMovimientos = await _repo.ObtenerMovimientosDelPeriodo(idPeriodo); 
             
-            var todosLosMovimientos = await _repo.ObtenerMovimientosDelPeriodo(idPeriodo); // El método que ya tenías
-            resultado.TotalDebe = todosLosMovimientos.Sum(x => x.MovimientoDebe);
-            resultado.TotalHaber = todosLosMovimientos.Sum(x => x.MovimientoHaber);
-            resultado.EsBalanceado = (resultado.TotalDebe == resultado.TotalHaber);
+            resultado.TotalDebe = todosLosMovimientos.Where(x => x.Naturaleza == "Deudor").Sum(x => x.SaldoFinal);
+            resultado.TotalHaber = todosLosMovimientos.Where(x => x.Naturaleza == "Acreedor").Sum(x => x.SaldoFinal);
+            
+            resultado.EsBalanceado = (Math.Round(resultado.TotalDebe, 2) == Math.Round(resultado.TotalHaber, 2));
+
+            resultado.Cuentas = todosLosMovimientos.Skip((pagina - 1) * TAMANO_PAGINA).Take(TAMANO_PAGINA).ToList();
+            resultado.TotalPaginas = (int)Math.Ceiling((double)todosLosMovimientos.Count / TAMANO_PAGINA);
 
             return resultado;
         }
@@ -54,7 +62,8 @@ namespace SistemaContable.Services
             if (!previsualizacion.EsBalanceado)
                 return (false, "No se puede cerrar un periodo desbalanceado.");
 
-            await _repo.CerrarPeriodo(idPeriodo, usuario);
+            var todosLosSaldos = await _repo.ObtenerMovimientosDelPeriodo(idPeriodo);
+            await _repo.CerrarPeriodo(idPeriodo, usuario, todosLosSaldos);
 
             // Bitácora usando el formato JSON correcto
             var log = new Bitacora

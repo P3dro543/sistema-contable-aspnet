@@ -40,5 +40,21 @@ namespace SistemaContable.Web.Pages.PeriodoContable
             Periodos = resultado.items;
             TotalPaginas = resultado.totalPaginas;
         }
+
+        public async Task<IActionResult> OnPostEliminarAsync(int id)
+        {
+            var resultado = await _service.Eliminar(id, User.Identity?.Name ?? "admin");
+
+            if (resultado.exito)
+            {
+                TempData["Exito"] = resultado.mensaje;
+            }
+            else
+            {
+                TempData["Error"] = resultado.mensaje;
+            }
+
+            return RedirectToPage(new { p = PaginaActual, filtro = Filtro });
+        }
     }
 }

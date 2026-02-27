@@ -39,7 +39,16 @@
 
 @if (Model.Resultado != null)
 {
-    <div class="card shadow">
+    if (!string.IsNullOrEmpty(Model.Resultado.MensajeError))
+    {
+        <div class="alert alert-danger mt-4 shadow-sm">
+            <h5><i class="bi bi-exclamation-triangle-fill"></i> Operación Bloqueada</h5>
+            <p class="mb-0">@Model.Resultado.MensajeError</p>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Balance de Comprobación</h5>
             @if (Model.Resultado.EsBalanceado)
@@ -52,13 +61,16 @@
             }
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" style="font-size: 0.9rem;">
                 <thead class="table-light">
                     <tr>
                         <th>Código</th>
                         <th>Cuenta</th>
+                        <th>Naturaleza</th>
+                        <th class="text-end text-muted">Saldo Inicial</th>
                         <th class="text-end">Mov. Debe</th>
                         <th class="text-end">Mov. Haber</th>
+                        <th class="text-end text-primary">Saldo Final</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,16 +79,22 @@
                         <tr>
                             <td>@c.Codigo</td>
                             <td>@c.Cuenta</td>
+                            <td>@c.Naturaleza</td>
+                            <td class="text-end text-muted">@c.SaldoInicial.ToString("N2")</td>
                             <td class="text-end">@c.MovimientoDebe.ToString("N2")</td>
                             <td class="text-end">@c.MovimientoHaber.ToString("N2")</td>
+                            <td class="text-end fw-bold text-primary">@c.SaldoFinal.ToString("N2")</td>
                         </tr>
                     }
                 </tbody>
                 <tfoot class="fw-bold table-secondary">
                     <tr>
-                        <td colspan="2" class="text-end">TOTALES:</td>
-                        <td class="text-end text-primary">@Model.Resultado.TotalDebe.ToString("N2")</td>
-                        <td class="text-end text-primary">@Model.Resultado.TotalHaber.ToString("N2")</td>
+                        <td colspan="6" class="text-end">SALDO TOTAL DE COMPROBACIÓN:</td>
+                        <td class="text-end text-success">DEBE: @Model.Resultado.TotalDebe.ToString("N2")</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="text-end"></td>
+                        <td class="text-end text-success">HABER: @Model.Resultado.TotalHaber.ToString("N2")</td>
                     </tr>
                 </tfoot>
             </table>
@@ -99,6 +117,7 @@
             }
         </div>
     </div>
+    }
 }
 
 @if (Model.Resultado != null && Model.Resultado.TotalPaginas > 1)

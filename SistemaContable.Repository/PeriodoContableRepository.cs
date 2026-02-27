@@ -39,6 +39,13 @@ namespace SistemaContable.Repository
             return await connection.QueryFirstOrDefaultAsync<PeriodoContable>(query, new { Id = id });
         }
 
+        public async Task<PeriodoContable?> ObtenerUltimoPeriodo()
+        {
+            using var connection = Connection;
+            var query = "SELECT id_periodo as IdPeriodo, anio as Anio, mes as Mes, estado as Estado, usuario_cierre as UsuarioCierre FROM periodos_contables ORDER BY anio DESC, mes DESC LIMIT 1";
+            return await connection.QueryFirstOrDefaultAsync<PeriodoContable>(query);
+        }
+
         public async Task<int> Insertar(PeriodoContable periodo)
         {
             using var connection = Connection;

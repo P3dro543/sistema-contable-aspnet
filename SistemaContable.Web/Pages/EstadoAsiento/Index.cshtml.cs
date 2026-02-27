@@ -14,14 +14,14 @@ namespace SistemaContable.Web.Pages.EstadoAsiento
             _service = service;
         }
 
-        // Lista de datos que se mostrar· en la tabla
+        // Lista de datos que se mostrar√° en la tabla
         public IEnumerable<SistemaContable.Entities.EstadoAsiento> Estados { get; set; } = new List<SistemaContable.Entities.EstadoAsiento>();
 
-        // Variables para controlar la paginaciÛn
+        // Variables para controlar la paginaci√≥n
         public int PaginaActual { get; set; } = 1;
         public int TotalPaginas { get; set; }
 
-        // Este mÈtodo se ejecuta al cargar la p·gina
+        // Este m√©todo se ejecuta al cargar la p√°gina
         // Recibe "p" desde la URL (ej: ?p=2)
         public async Task OnGet(int p = 1)
         {
@@ -32,6 +32,22 @@ namespace SistemaContable.Web.Pages.EstadoAsiento
 
             Estados = resultado.items;
             TotalPaginas = resultado.totalPaginas;
+        }
+
+        public async Task<IActionResult> OnPostEliminarAsync(int id)
+        {
+            var resultado = await _service.Eliminar(id, User.Identity?.Name ?? "admin");
+
+            if (resultado.exito)
+            {
+                TempData["Exito"] = resultado.mensaje;
+            }
+            else
+            {
+                TempData["Error"] = resultado.mensaje;
+            }
+
+            return RedirectToPage(new { p = PaginaActual });
         }
     }
 }

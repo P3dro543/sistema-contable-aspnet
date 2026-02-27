@@ -22,7 +22,7 @@ namespace SistemaContable.Services
 
         public async Task<(bool exito, string mensaje)> Insertar(PeriodoContable periodo, string usuario)
         {
-            var validacion = await Validar(periodo);
+            var validacion = await Validar(periodo, true);
             if (!validacion.esValido) return (false, validacion.mensaje);
 
             // Validar Estado numérico
@@ -47,7 +47,7 @@ namespace SistemaContable.Services
             var anterior = await _repo.ObtenerPorId(periodo.IdPeriodo);
             if (anterior == null) return (false, "El periodo no existe.");
 
-            var validacion = await Validar(periodo);
+            var validacion = await Validar(periodo, false);
             if (!validacion.esValido) return (false, validacion.mensaje);
 
             // LOGICA ESTADOS (1=Abierto, 2=Cerrado)
@@ -85,13 +85,28 @@ namespace SistemaContable.Services
 
         public async Task RegistrarConsulta(string usuario) => await RegistrarBitacora(usuario, "Consulta Periodos", "{}");
 
-        private async Task<(bool esValido, string mensaje)> Validar(PeriodoContable periodo)
+        private async Task<(bool esValido, string mensaje)> Validar(PeriodoContable periodo, bool esNuevo = false)
         {
             if (periodo.Anio < 2000 || periodo.Anio > 2100) return (false, "El año debe ser válido.");
             if (periodo.Mes < 1 || periodo.Mes > 12) return (false, "El mes debe ser entre 1 y 12.");
 
             if (await _repo.ExistePeriodo(periodo.Anio, periodo.Mes, periodo.IdPeriodo == 0 ? null : periodo.IdPeriodo))
                 return (false, $"Ya existe un periodo registrado para {periodo.Mes}/{periodo.Anio}.");
+
+            if (esNuevo)
+            {
+                var ultimo = await _repo.ObtenerUltimoPeriodo();
+                if (ultimo != null)
+                {
+                    int mesEsperado = ultimo.Mes == 12 ? 1 : ultimo.Mes + 1;
+                    int anioEsperado = ultimo.Mes == 12 ? ultimo.Anio + 1 : ultimo.Anio;
+
+                    if (periodo.Anio != anioEsperado || periodo.Mes != mesEsperado)
+                    {
+                        return (false, $"El nuevo periodo debe ser consecutivo al último registrado ({ultimo.Mes}/{ultimo.Anio}). El periodo esperado es {mesEsperado}/{anioEsperado}.");
+                    }
+                }
+            }
 
             return (true, string.Empty);
         }
