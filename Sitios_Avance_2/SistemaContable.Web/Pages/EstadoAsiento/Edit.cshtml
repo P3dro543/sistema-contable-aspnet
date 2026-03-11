@@ -1,0 +1,28 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.EstadoAsiento.EditModel
+@{
+    ViewData["Title"] = "Editar Estado";
+}
+
+<h2>Editar Estado de Asiento</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Estado.IdEstado" />
+
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input asp-for="Estado.Nombre" class="form-control" maxlength="40" />
+    </div>
+    <div class="mb-3">
+        <label>Descripción</label>
+        <textarea asp-for="Estado.Descripcion" class="form-control" rows="3" maxlength="200"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-3">@Model.Mensaje</div>
+}

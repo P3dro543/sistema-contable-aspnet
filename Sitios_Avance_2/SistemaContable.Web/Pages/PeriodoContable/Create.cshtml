@@ -1,0 +1,41 @@
+﻿@page
+@model SistemaContable.Web.Pages.PeriodoContable.CreateModel
+@{
+    ViewData["Title"] = "Nuevo Periodo";
+}
+
+<h2>Nuevo Periodo</h2>
+
+<form method="post">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Año</label>
+            <input asp-for="Periodo.Anio" class="form-control" type="number" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Mes</label>
+            <select asp-for="Periodo.Mes" class="form-select">
+                @for (int i = 1; i <= 12; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Estado</label>
+        <select asp-for="Periodo.Estado" class="form-select">
+            <option value="1">Abierto</option>
+            <option value="2">Cerrado</option>
+        </select>
+        <small class="text-muted">Si crea un periodo cerrado, se cerrarán automáticamente los anteriores.</small>
+    </div>
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-3">@Model.Mensaje</div>
+}

@@ -1,0 +1,17 @@
+﻿@page
+@model SistemaContable.Web.Pages.AccesoDenegadoModel
+@{
+    ViewData["Title"] = "Acceso Denegado";
+}
+
+<h1>Acceso denegado</h1>
+
+<p>
+    El acceso a esta sección está restringido.
+    <br />
+    Continúe para realizar su inicio de sesión.
+</p>
+
+<form method="get" action="@Url.Content("~/Login/Login")">
+    <button type="submit">Continuar</button>
+</form>

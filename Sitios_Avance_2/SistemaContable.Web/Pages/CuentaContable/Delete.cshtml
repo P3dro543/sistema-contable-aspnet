@@ -1,0 +1,36 @@
+@page "{id:int}"
+@model SistemaContable.Web.Pages.CuentaContable.DeleteModel
+
+<h2>Eliminar Cuenta Contable</h2>
+
+<div class="alert alert-warning mt-3">
+    <h4>¿Está seguro que desea eliminar esta cuenta?</h4>
+    <p>Esta acción no se puede deshacer. Además, el sistema validará automática y estrictamente que la cuenta no tenga historial de asientos ni subcuentas en la base de datos antes de permitir el borrado definitivo.</p>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Código</dt>
+            <dd class="col-sm-9">@Model.Cuenta.Codigo</dd>
+
+            <dt class="col-sm-3">Nombre</dt>
+            <dd class="col-sm-9">@Model.Cuenta.Nombre</dd>
+
+            <dt class="col-sm-3">Tipo</dt>
+            <dd class="col-sm-9">@Model.Cuenta.Tipo</dd>
+        </dl>
+    </div>
+</div>
+
+<form method="post" class="mt-4">
+    <input type="hidden" asp-for="Cuenta.IdCuenta" />
+    <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <br/>
+    <div class="alert alert-danger fade show">@Model.MensajeError</div>
+}

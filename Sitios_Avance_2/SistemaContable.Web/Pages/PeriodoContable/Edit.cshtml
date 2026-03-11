@@ -1,0 +1,41 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.PeriodoContable.EditModel
+@{
+    ViewData["Title"] = "Editar Periodo";
+}
+
+<h2>Editar Periodo</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Periodo.IdPeriodo" />
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label>Año</label>
+            <input asp-for="Periodo.Anio" class="form-control" type="number" readonly />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label>Mes</label>
+            <input asp-for="Periodo.Mes" class="form-control" readonly />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Estado</label>
+        <select asp-for="Periodo.Estado" class="form-select">
+            <option value="1">Abierto</option>
+            <option value="2">Cerrado</option>
+        </select>
+        <div class="form-text text-warning">Cambiar el estado puede afectar a otros periodos consecutivos.</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a asp-page="./Index"
+       asp-route-p="@Model.p"
+       asp-route-filtro="@Model.filtro"
+       class="btn btn-secondary">Cancelar</a>
+</form>
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-3">@Model.Mensaje</div>
+}

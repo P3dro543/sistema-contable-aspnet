@@ -1,0 +1,66 @@
+@page
+@model SistemaContable.Web.Pages.CuentaContable.CreateModel
+
+<h2>Crear Cuenta Contable</h2>
+
+<form method="post" class="mt-4">
+    <div class="form-group mb-3">
+        <label asp-for="Cuenta.Codigo" class="control-label">Código</label>
+        <input asp-for="Cuenta.Codigo" class="form-control" required maxlength="20" placeholder="Ej: 1000" />
+    </div>
+    
+    <div class="form-group mb-3">
+        <label asp-for="Cuenta.Nombre" class="control-label">Nombre</label>
+        <input asp-for="Cuenta.Nombre" class="form-control" required maxlength="100" placeholder="Ej: Activos" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Cuenta.Tipo" class="control-label">Tipo</label>
+        <select asp-for="Cuenta.Tipo" class="form-select" required>
+            <option value="">Seleccione...</option>
+            <option value="Activo">Activo</option>
+            <option value="Pasivo">Pasivo</option>
+            <option value="Patrimonio">Patrimonio</option>
+            <option value="Ingresos">Ingresos</option>
+            <option value="Gastos">Gastos</option>
+        </select>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Cuenta.TipoSaldo" class="control-label">Tipo de Saldo</label>
+        <select asp-for="Cuenta.TipoSaldo" class="form-select" required>
+            <option value="">Seleccione...</option>
+            <option value="Deudor">Deudor</option>
+            <option value="Acreedor">Acreedor</option>
+        </select>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="Cuenta.AceptaMovimiento" class="form-check-input" type="checkbox" />
+        <label class="form-check-label" asp-for="Cuenta.AceptaMovimiento">
+            ¿Acepta Movimientos? (Si se marca, se puede transaccionar en asientos)
+        </label>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Cuenta.IdCuentaPadre" class="control-label">Cuenta Padre (Opcional)</label>
+        <select asp-for="Cuenta.IdCuentaPadre" class="form-select">
+            <option value="">-- Ninguna (Cuenta Principal) --</option>
+            @foreach (var p in Model.PadresPosibles)
+            {
+                <option value="@p.IdCuenta">@p.Codigo - @p.Nombre</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <br/>
+    <div class="alert alert-danger fade show">@Model.MensajeError</div>
+}

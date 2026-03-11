@@ -1,0 +1,17 @@
+﻿@page
+@model SistemaContable.Web.Pages.ExpiradaModel
+@{
+    ViewData["Title"] = "Session Expirada";
+}
+
+<h1>Acceso denegado</h1>
+
+<p>
+   Su session se ha vencido o no la ha iniciado
+    <br />
+    Continúe para realizar su inicio de sesión.
+</p>
+
+<form method="get" action="@Url.Content("~/Login/Login")">
+    <button type="submit">Continuar</button>
+</form>

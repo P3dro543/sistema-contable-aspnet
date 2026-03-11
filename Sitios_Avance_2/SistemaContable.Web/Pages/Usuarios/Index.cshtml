@@ -1,0 +1,87 @@
+﻿@page
+@model SistemaContable.Web.Pages.Usuarios.IndexModel
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Mensajes -->
+@if (!string.IsNullOrEmpty(Model.MensajeExito))
+{
+    <div class="alert alert-success">@Model.MensajeExito</div>
+}
+
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <div class="alert alert-danger">@Model.MensajeError</div>
+}
+
+<!-- Botón Nuevo -->
+<p>
+    <a asp-page="Crear" class="btn btn-primary">Nuevo Usuario</a>
+</p>
+
+<!-- Tabla -->
+@if (Model.Usuarios.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model.Usuarios)
+            {
+                <tr>
+                    <td>@usuario.id_usuario</td>
+                    <td>@usuario.username</td>
+                    <td>@usuario.nombre @usuario.apellido</td>
+                    <td>@usuario.correo</td>
+                    <td>
+                        @if (usuario.estado == 1)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactivo</span>
+                        }
+                    </td>
+                    <td>
+                        <!-- Editar -->
+                        <a asp-page="Editar" asp-route-id="@usuario.id_usuario" class="btn btn-sm btn-warning">
+                            Editar
+                        </a>
+
+                        <!-- Cambio de Clave -->
+                        <a asp-page="CambioClave" asp-route-id="@usuario.id_usuario" class="btn btn-sm btn-info">
+                            Clave
+                        </a>
+
+                        <!-- Eliminar -->
+                        <form method="post" asp-page-handler="Eliminar" style="display: inline;">
+                            <input type="hidden" name="id" value="@usuario.id_usuario" />
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('¿Eliminar este usuario?')">
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        No hay usuarios registrados.
+    </div>
+}

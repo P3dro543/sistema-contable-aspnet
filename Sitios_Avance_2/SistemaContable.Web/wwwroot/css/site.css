@@ -1,0 +1,185 @@
+﻿/* =========================================
+   ESTRUCTURA BASE (INTEGRACIÓN)
+   ========================================= */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    /* Aplicamos el fondo degradado sutil del primer estilo */
+    background: linear-gradient(135deg, #eef2f7, #dbe3ec);
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    color: #212529;
+}
+
+/* =========================================
+   SIDEBAR (AZUL MODERNO)
+   ========================================= */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    padding: 1rem;
+    /* Cambiamos el blanco por el degradado azul */
+    background: linear-gradient(180deg, #0d6efd, #052c65);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    color: white;
+}
+
+    .sidebar .navbar-brand {
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        display: block;
+        text-align: center;
+    }
+
+    .sidebar .nav-link {
+        color: #e9ecef !important; /* Texto claro para fondo azul */
+        font-weight: 500;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+        .sidebar .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ffc107 !important; /* El toque amarillo del primer estilo */
+        }
+
+/* =========================================
+   TOPBAR Y CONTENIDO
+   ========================================= */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 220px;
+    right: 0;
+    height: 70px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 1.5rem;
+    z-index: 900;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.topbar-right img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #0d6efd;
+}
+
+.content {
+    margin-left: 220px;
+    padding-top: 70px;
+    min-height: 100vh;
+}
+
+/* =========================================
+   LOGIN Y MENSAJES (MANTENIENDO TU LÓGICA)
+   ========================================= */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 30px;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+}
+
+    .login-container h1, .login-container h3 {
+        color: #0d6efd;
+        font-weight: 700;
+    }
+
+    /* Estilo de botones moderno aplicado a tus botones */
+    .login-container button, .btn-primary {
+        background: linear-gradient(135deg, #0d6efd, #084298) !important;
+        border: none !important;
+        border-radius: 30px !important;
+        padding: 10px 20px;
+        font-weight: 600;
+        color: white;
+    }
+
+/* Tus validaciones de error se mantienen igual */
+.error-message, .text-danger {
+    color: #dc3545;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.alert-danger {
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* EL DISTINTIVO DE CARGA (Opcional) */
+body::before {
+    content: "SISTEMA ACTUALIZADO ?";
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: #198754;
+    color: #ffffff;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    z-index: 9999;
+    opacity: 0.8; pointer-events: none;
+}
+* BARRA SUPERIOR */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 220px; /* Ajustar si cambiaste el ancho del sidebar */
+    right: 0;
+    height: 70px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Empuja todo a la derecha */
+    padding: 0 1.5rem;
+    z-index: 900;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Contenedor de la info del usuario */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre el nombre y la imagen */
+}
+
+.user-name {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+/* Estilo de la imagen de perfil */
+.topbar-profile-img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #0d6efd; /* Círculo azul sutil */
+    transition: transform 0.2s;
+}
+
+    .topbar-profile-img:hover {
+        transform: scale(1.1); /* Efecto zoom al pasar el mouse */
+    }

@@ -1,0 +1,66 @@
+﻿@page
+@model SistemaContable.Pages.Asientos.IndexModel
+
+@{
+    ViewData["Title"] = "Listado de Asientos";
+}
+<a asp-page="Create" class="btn btn-primary">
+    Nuevo Asiento
+</a>
+
+
+<h2>Listado de Asientos</h2>
+
+<hr />
+
+<h4>Totales Generales</h4>
+
+<p>
+    <strong>Total Debe:</strong> ₡@Model.TotalDebe <br />
+    <strong>Total Haber:</strong> ₡@Model.TotalHaber
+</p>
+
+<hr />
+
+<table class="table table-bordered table-striped">
+
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Consecutivo</th>
+            <th>Fecha</th>
+            <th>Código</th>
+            <th>Referencia</th>
+            <th>Estado</th>
+            <th>Total Debe</th>
+            <th>Total Haber</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var a in Model.Asientos)
+        {
+            var debe = a.Detalles
+            .Where(d => d.TipoMovimiento == "Debe")
+            .Sum(d => d.Monto);
+
+            var haber = a.Detalles
+            .Where(d => d.TipoMovimiento == "Haber")
+            .Sum(d => d.Monto);
+
+            <tr>
+                <td>@a.Id</td>
+                <td>@a.Consecutivo</td>
+                <td>@a.Fecha.ToShortDateString()</td>
+                <td>@a.Codigo</td>
+                <td>@a.Referencia</td>
+                <td>@a.Estado</td>
+                <td>₡@debe</td>
+                <td>₡@haber</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

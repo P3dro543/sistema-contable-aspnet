@@ -1,0 +1,25 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.Pantalla.DeleteModel
+
+<h2>Eliminar Pantalla</h2>
+
+<div class="alert alert-warning">
+    ¿Está seguro que desea eliminar esta pantalla?
+</div>
+
+<ul>
+    <li><strong>Nombre:</strong> @Model.Pantalla.Nombre</li>
+    <li><strong>Descripcion:</strong> @Model.Pantalla.Descripcion</li>
+    <li><strong>Ruta:</strong> @Model.Pantalla.Ruta</li>
+</ul>
+
+<form method="post">
+    <input type="hidden" asp-for="Pantalla.IdPantalla" />
+    <button class="btn btn-danger">Eliminar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-2">@Model.Mensaje</div>
+}

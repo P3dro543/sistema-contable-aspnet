@@ -1,0 +1,90 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.Usuarios.CambioClaveModel
+
+@{
+    ViewData["Title"] = "Cambio de Contraseña";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="mb-3">
+    <p><strong>Usuario:</strong> @Model.Modelo.username</p>
+    <p><strong>Nombre:</strong> @Model.Modelo.nombre_completo</p>
+</div>
+
+<form method="post">
+    <!-- ID oculto -->
+    <input type="hidden" asp-for="Modelo.id_usuario" />
+    <input type="hidden" asp-for="Modelo.username" />
+    <input type="hidden" asp-for="Modelo.nombre_completo" />
+
+    <!-- Nueva Contraseña -->
+    <div class="mb-3">
+        <label asp-for="Modelo.nueva_clave" class="form-label">Nueva Contraseña *</label>
+        <div class="input-group">
+            <input asp-for="Modelo.nueva_clave" type="text" class="form-control"
+                   style="background-color: #f8f9fa;" />
+            <button type="submit" asp-page-handler="Autogenerar"
+                    class="btn btn-outline-secondary">
+                Autogenerar
+            </button>
+        </div>
+        <small class="form-text text-muted">
+            Debe iniciar con letra y contener letras, números y símbolos (+-*$.)
+        </small>
+    </div>
+
+    <!-- Confirmar Contraseña -->
+    <div class="mb-4">
+        <label asp-for="Modelo.confirmar_clave" class="form-label">Confirmar Contraseña *</label>
+        <input asp-for="Modelo.confirmar_clave" type="text" class="form-control"
+               style="background-color: #f8f9fa;" />
+    </div>
+
+    <!-- Botones -->
+    <div class="d-flex justify-content-between">
+        <div>
+            <button type="submit" class="btn btn-success">Aceptar</button>
+            <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+        </div>
+        <div>
+            <a asp-page="Editar" asp-route-id="@Model.Modelo.id_usuario"
+               class="btn btn-outline-primary">Volver a Editar</a>
+        </div>
+    </div>
+</form>
+
+<!-- Mensaje de error -->
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-3">@Model.Mensaje</div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Hacer campos editables al hacer doble clic
+        var nuevaClaveField = document.querySelector('input[name="Modelo.nueva_clave"]');
+        var confirmarClaveField = document.querySelector('input[name="Modelo.confirmar_clave"]');
+
+        if (nuevaClaveField) {
+            nuevaClaveField.addEventListener('dblclick', function() {
+                this.readOnly = false;
+                this.style.backgroundColor = 'white';
+            });
+        }
+
+        if (confirmarClaveField) {
+            confirmarClaveField.addEventListener('dblclick', function() {
+                this.readOnly = false;
+                this.style.backgroundColor = 'white';
+            });
+        }
+
+        // Auto-completar confirmación cuando se escribe en nueva clave
+        if (nuevaClaveField && confirmarClaveField) {
+            nuevaClaveField.addEventListener('input', function() {
+                confirmarClaveField.value = this.value;
+            });
+        }
+    });
+</script>

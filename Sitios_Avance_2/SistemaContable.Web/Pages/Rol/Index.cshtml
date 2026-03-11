@@ -1,0 +1,36 @@
+﻿@page
+@model SistemaContable.Web.Pages.Rol.IndexModel
+
+<h2>Administración de Roles</h2>
+
+<a asp-page="Create" class="btn btn-primary">Nuevo Rol</a>
+
+<table class="table mt-3">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Pantallas Asignadas</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model.Roles)
+        {
+            <tr>
+                <td>@r.IdRol</td>
+                <td>@r.Nombre</td>
+                <td>@r.PantallasAsignadas.Count pantalla(s)</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@r.IdRol">Editar</a> |
+                    <a asp-page="Delete" asp-route-id="@r.IdRol">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger">@Model.Mensaje</div>
+}

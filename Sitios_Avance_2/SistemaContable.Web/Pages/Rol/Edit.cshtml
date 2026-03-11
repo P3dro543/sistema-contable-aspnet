@@ -1,0 +1,54 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.Rol.EditModel
+
+<h2>Editar Rol</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Rol.IdRol" />
+
+    <div class="mb-2">
+        <label>ID de Rol</label>
+        <input asp-for="Rol.IdRol" class="form-control" disabled />
+    </div>
+
+    <div class="mb-2">
+        <label>Nombre</label>
+        <input asp-for="Rol.Nombre" class="form-control" maxlength="40" />
+        <small class="form-text text-muted">Máximo 40 caracteres. Solo letras y espacios.</small>
+    </div>
+
+    <div class="mb-3">
+        <label>Pantallas Asignadas</label>
+        <div class="border p-3" style="max-height: 300px; overflow-y: auto;">
+            @if (Model.PantallasDisponibles.Any())
+            {
+                foreach (var pantalla in Model.PantallasDisponibles)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="PantallasSeleccionadas"
+                               value="@pantalla.IdPantalla"
+                               id="pantalla_@pantalla.IdPantalla"
+                               @(Model.Rol.PantallasAsignadas.Contains(pantalla.IdPantalla) ? "checked" : "") />
+                        <label class="form-check-label" for="pantalla_@pantalla.IdPantalla">
+                            @pantalla.Nombre - @pantalla.Descripcion
+                        </label>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">No hay pantallas disponibles.</p>
+            }
+        </div>
+    </div>
+
+    <button class="btn btn-primary">Guardar Cambios</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-2">@Model.Mensaje</div>
+}

@@ -1,0 +1,33 @@
+﻿@model SistemaContable.Web.ViewComponents.SidebarMenuViewComponent.SidebarMenuViewModel
+
+<div class="sidebar-container">
+    <div class="topbar">
+        <div class="user-info">
+            <span class="user-name">@Model.NombreUsuario</span>
+            <img src="@Url.Content("~/avatares/defecto.jpg")"
+                 alt="Usuario"
+                 class="topbar-profile-img" />
+        </div>
+    </div>
+
+    <nav class="sidebar">
+        <div class="text-center mb-3">
+            <img src="@Url.Content(Model.RutaLogo)" width="120" style="max-height:120px; object-fit:contain;" />
+        </div>
+
+        <a class="navbar-brand mb-4" href="@Url.Content("~/IndexAdmin")">
+            Sistema Contable
+        </a>
+
+        <ul class="navbar-nav w-100">
+            @foreach (var item in @Model.Pantallas)
+            {
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Content("~/" + item.Ruta)">
+                        @item.Nombre
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

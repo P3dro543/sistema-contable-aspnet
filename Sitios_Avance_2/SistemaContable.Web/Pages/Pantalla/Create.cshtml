@@ -1,0 +1,35 @@
+﻿@page
+@model SistemaContable.Web.Pages.Pantalla.CreateModel
+
+<h2>Nueva Pantalla</h2>
+
+<form method="post">
+    <div class="mb-2">
+        <label>Nombre</label>
+        <input asp-for="Pantalla.Nombre" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>Descripcion</label>
+        <input asp-for="Pantalla.Descripcion" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>Ruta</label>
+        <input asp-for="Pantalla.Ruta" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>
+            <input asp-for="Pantalla.Estado" /> Activa
+        </label>
+    </div>
+
+    <button class="btn btn-success">Guardar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-2">@Model.Mensaje</div>
+}

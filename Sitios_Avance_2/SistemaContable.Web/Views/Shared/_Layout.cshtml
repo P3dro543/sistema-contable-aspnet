@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SistemaContable.Web</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SistemaContable.Web.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+
+    @await Component.InvokeAsync("SidebarMenu")
+
+
+    <header class="topbar">
+        <div class="topbar-right">
+            <img src="~/avatares/defecto.jpg" alt="Usuario" />
+        </div>
+    </header>
+
+    <div class="content d-flex flex-column min-vh-100">
+        <main role="main" class="p-4 flex-grow-1">
+            @RenderBody()
+        </main>
+
+        <footer class="border-top text-muted py-3">
+            <div class="container">
+                &copy; 2026 - SistemaContable.Web
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.Usuarios.EditarModel
+
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post">
+    <!-- ID oculto -->
+    <input type="hidden" asp-for="Usuario.id_usuario" />
+
+    <!-- Nombre de Usuario -->
+    <div class="mb-2">
+        <label>Nombre de Usuario *</label>
+        <input asp-for="Usuario.username" class="form-control" maxlength="50" />
+        <small class="form-text text-muted">Identificación única del usuario.</small>
+    </div>
+
+    <!-- Nombre -->
+    <div class="mb-2">
+        <label>Nombre *</label>
+        <input asp-for="Usuario.nombre" class="form-control" maxlength="50" />
+        <small class="form-text text-muted">Máximo 50 caracteres. Solo letras y espacios.</small>
+    </div>
+
+    <!-- Apellido -->
+    <div class="mb-2">
+        <label>Apellido *</label>
+        <input asp-for="Usuario.apellido" class="form-control" maxlength="50" />
+        <small class="form-text text-muted">Máximo 50 caracteres. Solo letras y espacios.</small>
+    </div>
+
+    <!-- Correo -->
+    <div class="mb-2">
+        <label>Correo Electrónico *</label>
+        <input asp-for="Usuario.correo" type="email" class="form-control" maxlength="100" />
+    </div>
+
+    <!-- Estado -->
+    <div class="mb-2">
+        <label>Estado *</label>
+        <div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                       asp-for="Usuario.estado" value="1">
+                <label class="form-check-label">Activo</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio"
+                       asp-for="Usuario.estado" value="0">
+                <label class="form-check-label">Inactivo</label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roles Asociados -->
+    <div class="mb-3">
+        <label>Roles Asociados</label>
+        <div class="border p-3" style="max-height: 300px; overflow-y: auto;">
+            @if (Model.RolesDisponibles.Any())
+            {
+                @foreach (var rol in Model.RolesDisponibles)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="RolesSeleccionados"
+                               value="@rol.IdRol"
+                               id="rol_@rol.IdRol"
+                               @(Model.RolesSeleccionados.Contains(rol.IdRol) ? "checked" : "") />
+                        <label class="form-check-label" for="rol_@rol.IdRol">
+                            @rol.Nombre
+                        </label>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted">No hay roles disponibles.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Botones -->
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+
+    <!-- Enlace a Cambio de Clave -->
+    <a asp-page="CambioClave" asp-route-id="@Model.Usuario.id_usuario"
+       class="btn btn-warning">Cambiar Contraseña</a>
+</form>
+
+<!-- Mensaje de error -->
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-2">@Model.Mensaje</div>
+}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Marcar el radio button correcto según el estado
+        var estado = @Model.Usuario.estado;
+        if (estado === 0) {
+            document.querySelector('input[value="0"]').checked = true;
+        } else {
+            document.querySelector('input[value="1"]').checked = true;
+        }
+    });
+</script>

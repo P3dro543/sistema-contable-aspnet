@@ -1,0 +1,37 @@
+﻿@page "{id:int}"
+@model SistemaContable.Web.Pages.Pantalla.EditModel
+
+<h2>Editar Pantalla</h2>
+
+<form method="post">
+    <input type="hidden" asp-for="Pantalla.IdPantalla" />
+
+    <div class="mb-2">
+        <label>Nombre</label>
+        <input asp-for="Pantalla.Nombre" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>Descripcion</label>
+        <input asp-for="Pantalla.Descripcion" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>Ruta</label>
+        <input asp-for="Pantalla.Ruta" class="form-control" />
+    </div>
+
+    <div class="mb-2">
+        <label>
+            <input asp-for="Pantalla.Estado" /> Activa
+        </label>
+    </div>
+
+    <button class="btn btn-primary">Guardar Cambios</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger mt-2">@Model.Mensaje</div>
+}
